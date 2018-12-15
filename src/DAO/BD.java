@@ -52,7 +52,7 @@ public class BD {
 
     //inserir lançamentos de horas
     public void inserirFicha(Ficha ficha) {
-        String sql = "INSERT INTO fichas (data, nome_aluno, nome_responsavel, valor) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO fichas (data, nome_aluno, nome_responsavel, valor, nome_usuario) VALUES (?,?,?,?,?)";
 
         try {
             connect();
@@ -61,6 +61,7 @@ public class BD {
             pstmt.setString(2, ficha.getNome_aluno());
             pstmt.setString(3, ficha.getNome_responsavel());
             pstmt.setDouble(4, ficha.getValor());
+            pstmt.setString(5, ficha.getNome_usuario());
 
             pstmt.executeUpdate();
 
@@ -72,8 +73,8 @@ public class BD {
     }
 
     //retorna os lançamentos do dia
-    public double buscarTotal() {
-        String sql = "SELECT SUM(valor) FROM fichas;";
+    public double buscarTotal(String nome) {
+        String sql = "SELECT SUM(valor) FROM fichas WHERE nome_usuario = '" + nome + "'";
         double v = 0;
         try {
             connect();
@@ -96,8 +97,8 @@ public class BD {
     
     
     //retorna os lançamentos do dia
-    public void buscarFichas(JTable TabLancamentos) {
-        String sql = "SELECT * FROM fichas";
+    public void buscarFichas(JTable TabLancamentos, String nome) {
+        String sql = "SELECT * FROM fichas WHERE nome_usuario = '" + nome + "'";
         try {
             connect();
             Statement stmt = conn.createStatement();
